@@ -153,6 +153,19 @@ module.exports = (function () {
     });
   };
 
+  pageitemcontroller.deleteAll = function (req, res) {
+    console.log('Deleting all the pageItems');
+
+    PageItem.remove({}, function (err, result) {
+      if (err) {
+        res.send({ 'error': 'An error has occurred - ' + err });
+      } else {
+        console.log('Success: ' + result + ' document(s) deleted');
+        res.send(req.body);
+      }
+    });
+  };
+
   /*--------------------------------------------------------------------------------------------------------------------*/
   // Populate database with sample data -- Only used once: the first time the application is started.
   // You'd typically not find this code in a real-life app, since the database would already exist.

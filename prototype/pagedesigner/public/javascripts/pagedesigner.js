@@ -94,8 +94,23 @@ var pageDesignerGlobal = {};
 			
 		});
 	};
+	pageDesigner.onDeleteToolItemDeployed = function (event) {
+
+		pageDesigner.httpClient.deleteUrl("/pageitems")
+		//pageDesigner.httpClient.getUrl("/resources/newitem.json")
+			.then(function (obj) {
+				// TODO: ボタンの色を変化させるか
+				//document.getElementById("clearToolItemDeployedButton").classList.remove("mdl-button--colored");
+
+				console.log("succeeded to delete!", obj, "clear!!");
+			})
+			.catch(function (e) {
+				console.log("failed to delete data...", e);
+			});
+	};
 	
 	pageDesigner.httpClient = {
+		// TODO: 下記 POST/GET/DELETEで重複コードあるため、共通化する
 		postUrl: function (url, data, header) {
 			return new Promise(function(resolve, reject) {
 				var xhr = new XMLHttpRequest();
@@ -123,6 +138,25 @@ var pageDesignerGlobal = {};
 			return new Promise(function (resolve, reject) {
 				var xhr = new XMLHttpRequest();
 				xhr.open("GET", url);
+				//xhr.responseType = 'json';
+				xhr.onload = function () {
+					if (xhr.status === 200) {
+						resolve(xhr.responseText);
+					}
+					else {
+						reject(new Error(xhr.statusText));
+					}
+				};
+				xhr.onerror = function () {
+					reject(new Error(xhr.statusText));
+				};
+				xhr.send();
+			});
+		},
+		deleteUrl: function (url) {
+			return new Promise(function (resolve, reject) {
+				var xhr = new XMLHttpRequest();
+				xhr.open("DELETE", url);
 				//xhr.responseType = 'json';
 				xhr.onload = function () {
 					if (xhr.status === 200) {

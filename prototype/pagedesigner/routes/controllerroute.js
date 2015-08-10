@@ -25,5 +25,6 @@ module.exports = function (app, controller) {
 	pageitemrouter.post('/', controller.pageitem.addPageItem);
 	pageitemrouter.put('/:id', controller.pageitem.updatePageItem);
 	pageitemrouter.delete('/:id', controller.pageitem.deletePageItem);
+	pageitemrouter.delete('/', controller.pageitem.deleteAll);
 	app.use('/pageitems', pageitemrouter);
 };
